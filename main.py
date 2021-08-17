@@ -74,8 +74,19 @@ def getRousource(url):
             if _url.get_attribute("href") != None and _url.get_attribute("href") != "#" and _url.get_attribute("href") not in finishurl:
                 if urljoin(url,_url.get_attribute("href")) not in finishurl:
                     pending.append(urljoin(url,_url.get_attribute("href")))
+        _urls = browser.find_elements_by_xpath("//link")
+        for _url in _urls:
+            if _url.get_attribute("href") not in finishurl:
+                if urljoin(url, _url.get_attribute("href")) not in finishurl:
+                    download(urljoin(url, _url.get_attribute("href")))
+                    finishurl.append(urljoin(url, _url.get_attribute("href")))
+        _urls = browser.find_elements_by_xpath("//script")
+        for _url in _urls:
+            if _url.get_attribute("src") not in finishurl:
+                if urljoin(url, _url.get_attribute("src")) not in finishurl:
+                    download(urljoin(url, _url.get_attribute("src")))
+                    finishurl.append(urljoin(url, _url.get_attribute("src")))
         browser.quit()
-
         for u in pending:
             getRousource(u)
     except:
